@@ -1,0 +1,15 @@
+<script>
+  async function start() {
+    const response = await fetch("https://www.citysearch-api.com/fr/pays?login=APP_LOGIN&apikey=APP_KEY");
+    const data = await response.json();
+    var paysList = data.results;
+    var text = `<select name="pays" class="form-control"> <option >  </option>`;
+    for (x in paysList) {
+      text += `<option value="${paysList[x].pays}" > ${paysList[x].pays}</option>`;
+      console.log(paysList[x].pays);
+    }
+    text += `</select> `;
+    document.getElementById("pays").innerHTML = text;
+  }
+  start();
+</script>
