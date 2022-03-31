@@ -35,7 +35,15 @@ class SemRegistreRepository extends ServiceEntityRepository
         ;
     }
     */
-
+    public function findNum($num)
+    {
+        $query=$this->createQueryBuilder('s')
+            ->join("s.user","us")
+            ->where("us.num_register = :num")
+            ->setParameter('num',$num)
+            ;
+        return $query->getQuery()->getResult();
+    }
     /*
     public function findOneBySomeField($value): ?SemRegistre
     {

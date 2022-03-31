@@ -1,77 +1,105 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}SemRegistre{% endblock %}
+{% block title %}welcome{% endblock %}
 
 {% block body %}
-  <h1>Informations de condidat
-  </h1>
 
-  <table class="table">
-    <tbody>
+  <style>
+    body {
+      background-image: linear-gradient(to right, #ebf2fa 0%, #76bfe9 100%) !important;
+      margin-top: 20px;
+      padding-top: 80px;
+    }
+    .container {
+      background-image: linear-gradient(to right, #ebf2fa 0%, #fcfcfc 100%) !important;
 
-      <tr>
-        <th>Civilite</th>
-        <td>{{ sem_registre.civilite }}</td>
-      </tr>
-      <tr>
-        <th>Nom</th>
-        <td>{{ sem_registre.nom }}</td>
-      </tr>
-      <tr>
-        <th>Prenom</th>
-        <td>{{ sem_registre.prenom }}</td>
-      </tr>
-      <tr>
-        <th>Intitule_poste</th>
-        <td>{{ sem_registre.intitulePoste }}</td>
-      </tr>
-      <tr>
-        <th>Phone</th>
-        <td>{{ sem_registre.phone }}</td>
-      </tr>
-      <tr>
-        <th>Phone_fix</th>
-        <td>{{ sem_registre.phoneFix }}</td>
-      </tr>
-      <tr>
-        <th>Raison_soc</th>
-        <td>{{ sem_registre.raisonSoc }}</td>
-      </tr>
-      <tr>
-        <th>Adresse</th>
-        <td>{{ sem_registre.adresse }}</td>
-      </tr>
-      <tr>
-        <th>Code_postale</th>
-        <td>{{ sem_registre.codePostale }}</td>
-      </tr>
-      <tr>
-        <th>Ville</th>
-        <td>{{ sem_registre.ville }}</td>
-      </tr>
-      <tr>
-        <th>Pays</th>
-        <td>{{ sem_registre.pays }}</td>
-      </tr>
-      <tr>
-        <th>Web_site</th>
-        <td>{{ sem_registre.webSite }}</td>
-      </tr>
-      <tr>
-        <th>Activity</th>
-        <td>{{ sem_registre.activity }}</td>
-      </tr>
-      <tr>
-        <th>Etat_dem</th>
-        <td>{{ sem_registre.etatDem }}</td>
-      </tr>
-    </tbody>
-  </table>
+      padding: 50px;
+      width: 730px;
+      height: auto;
 
-  {% if is_granted('ROLE_ADMIN') %}
-    <a href="{{path('home')}}">
-      retour à la liste
-    </a>
-  {% endif %}
+      box-shadow: 0 10px 20px 0 rgba(0, 0, 0.1, 0.3);
+      border-radius: 10px;
+
+    }
+
+    h6 {
+      color: #40b087;
+    }
+    h5 {
+      color: #054b31;
+    }
+    h3 {
+      color: #bf4441;
+      margin-left: 180px;
+      margin-bottom: 60px;
+    }
+  </style>
+  <a href="{{path('logout')}}" class="btn float-right">deconnexion</a>
+
+  <body>
+    <br>
+
+      <h3>Fiche d'inscription
+      </h3>
+      <div class="container">
+        <div class="row">
+          <div class="col-sm">
+
+            <h5 class="mb-5 text-center heading">Infomations personnelles</h5>
+            <h6>
+              Nom :
+            </h6>{{ sem_registre.nom }}<br>
+            <h6>
+              Prénom :
+            </h6>
+            {{ sem_registre.prenom }}<br>
+            <h6>
+              Civilité :</h6>{{ sem_registre.civilite }}
+            <br>
+              <h6>Intitulé du poste :</h6>
+              {{ sem_registre.intitulePoste }}</br>
+            <h6>Phone :
+            </h6>{{ sem_registre.phone }}
+          </br>
+          <h6>Phone fix :</h6>
+          {{ sem_registre.phoneFix }}</br>
+        <br>
+        <button onclick="window.print()">Print this page</button>
+
+      </div>
+
+      <div class="col-sm">
+        <h5 class="mb-5 text-center heading">Infomations de l'entreprise
+        </h5>
+        <h6>
+          Raison sociale :
+        </h6>{{ sem_registre.raisonSoc }}<br>
+        <h6>
+          Aderesse :
+        </h6>
+        {{ sem_registre.adresse }}<br>
+        <h6>
+          Code postale :</h6>{{ sem_registre.codePostale }}
+        <br>
+          <h6>Ville :</h6>
+          {{ sem_registre.ville }}</br>
+        <h6>Pays :
+        </h6>{{ sem_registre.pays }}
+      </br>
+      <h6>Site web :</h6>
+      {{ sem_registre.webSite }}</br>
+    <h6>Acitivité :</h6>
+    {{ sem_registre.activity }}
+  </br>
+</div>
+</div>
+</div>
+
+{% if is_granted('ROLE_ADMIN') %}
+<a href="{{path('home')}}">
+retour à la liste
+</a>
+</body>
+{% endif %}
 
 {% endblock %}

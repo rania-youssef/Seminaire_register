@@ -3,69 +3,128 @@
 {% block title %}Voiture index{% endblock %}
 
 {% block body %}
+  {% include "javas1.html.twig"%}
 
   {% if is_granted('ROLE_ADMIN') %}
 
     <style>
+      body {
+        background-image: linear-gradient(to right, #ebf2fa 0%, #c4e9ff 100%) !important;
+      }
+      .btn {
+        padding-left: 20px;
+        padding-right: 20px;
+      }
+      body {
+        text-align: center;
+        margin-top: 20px;
+        padding-top: 80px;
+      }
       table {
-        border: 1px solid black;
+        margin: 60px;
+      }
+      #inputPassword2 {
+        margin-left: 50px;
+      }
+      h2 {
+        margin-bottom: 45px;
       }
     </style>
+    <body>
+      <a href="{{path('logout')}}" class="btn float-right">deconnexion</a><br>
 
-    <button onclick="window.print()">Print this page</button>
-    <form action="{{path('envoie_email')}}" method="post">
-      <table class="table">
-        <tr>
+      <h2>
+        Liste des demandes
+      </h2>
 
-          <th>
-            N°</th>
-          <th>Prenom</th>
-          <th>Nom
-          </th>
-          <th>Email
-          </th>
-          <th>Téléphone</th>
-          <th>Etat</th>
-          <th></th>
+      <form class="form-inline" action="{{path('recherche_num')}}" method="post">
 
-        </tr>
+        <div class="form-group mx-sm-3 ">
+          <input type="text" class="form-control" name="num_rech" placeholder="N° d'inscription ">
 
-        <tr>
-          {% if liste_demande %}
-            {% for demande in liste_demande %}
-              <tr>
-                <td>
-                  <input type="checkbox" name="checked[]" value="{{demande.user.id}}" class="multi_checkbox checkall">
+          <button type="submit" class="btn btn-primary mb-2 ">Rechercher</button>
+        </div>
+      </form>
+      <br>
+
+      <form method="post" action="{{path('recherchepays')}}">
+        <div id="pays1"></div>
+      </form>
+
+      <form action="{{path('envoie_email')}}" method="post">
+        <table class="table">
+          <tr>
+            <th></th>
+            <th>
+              N°</th>
+            <th>Prenom</th>
+            <th>Nom
+            </th>
+            <th>Email
+            </th>
+            <th>Téléphone</th>
+            <th>Etat</th>
+            <th></th>
+
+          </tr>
+
+          <tr>
+            {% if liste_demande %}
+              {% for demande in liste_demande %}
+                <tr>
+                  <td>
+                    <input type="checkbox" name="checked[]" value="{{demande.user.id}}" class="multi_checkbox checkall"></td>
                   <td>{{demande.user.getNumRegister()}}</td>
 
                   <td>{{demande.nom}}</td>
                   <td>{{demande.prenom}}</td>
                   <td>{{demande.user.email}}</td>
                   <td>{{demande.phone}}</td>
-                  <td>
-                    <a href="{{path('show_dem',{'id':demande.id})}}">
-                      show
-                    </a>
-                  </td>
+
                   {% if demande.getEtatDem == "en attente" %}
 
                     <td>
-                      <a href="{{path('accepter',{'id':demande.id})}}">Accepter</a>
-                      <a href="{{path('refuser',{'id':demande.id})}}">Refuser</a>
+                      <a href="{{path('accepter',{'id':demande.id})}}" class="btn btn-success btn-sm">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-check" viewbox="0 0 16 16">
+                          <path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z"/>
+                        </svg>
+                      </a>
+                      <a href="{{path('refuser',{'id':demande.id})}}" class="btn btn-danger btn-sm">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-x-lg" viewbox="0 0 16 16">
+                          <path fill-rule="evenodd" d="M13.854 2.146a.5.5 0 0 1 0 .708l-11 11a.5.5 0 0 1-.708-.708l11-11a.5.5 0 0 1 .708 0Z"/>
+                          <path fill-rule="evenodd" d="M2.146 2.146a.5.5 0 0 0 0 .708l11 11a.5.5 0 0 0 .708-.708l-11-11a.5.5 0 0 0-.708 0Z"/>
+                        </svg>
+                      </a>
                     </td>
                   {% else %}
                     <td>
                       {{demande.getEtatDem}}</td>
                   {% endif %}
+                  <td>
+                    <a href="{{path('show_dem',{'id':demande.id})}}">
+                      show
+                    </a>
+                  </td>
                 </tr>
 
               {% endfor %}
             </table>
 
-            <button type="submit">Envoyer email</button>
+            <button type="submit" class="btn btn-primary">
+              <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-envelope-check-fill" viewbox="0 0 16 16">
+                <path d="M.05 3.555A2 2 0 0 1 2 2h12a2 2 0 0 1 1.95 1.555L8 8.414.05 3.555ZM0 4.697v7.104l5.803-3.558L0 4.697ZM6.761 8.83l-6.57 4.026A2 2 0 0 0 2 14h6.256A4.493 4.493 0 0 1 8 12.5a4.49 4.49 0 0 1 1.606-3.446l-.367-.225L8 9.586l-1.239-.757ZM16 4.697v4.974A4.491 4.491 0 0 0 12.5 8a4.49 4.49 0 0 0-1.965.45l-.338-.207L16 4.697Z"/>
+                <path d="M16 12.5a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Zm-1.993-1.679a.5.5 0 0 0-.686.172l-1.17 1.95-.547-.547a.5.5 0 0 0-.708.708l.774.773a.75.75 0 0 0 1.174-.144l1.335-2.226a.5.5 0 0 0-.172-.686Z"/>
+              </svg>
 
-          </form>
+            </button>
+          </form><br><br>
+          <svg xmlns="http://www.w3.org/2000/svg" width="29" height="29" fill="currentColor" class="bi bi-printer-fill" viewbox="0 0 16 16">
+            <path d="M5 1a2 2 0 0 0-2 2v1h10V3a2 2 0 0 0-2-2H5zm6 8H5a1 1 0 0 0-1 1v3a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-3a1 1 0 0 0-1-1z"/>
+            <path d="M0 7a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2h-1v-2a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v2H2a2 2 0 0 1-2-2V7zm2.5 1a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1z"/>
+          </svg>
+
         {% endif %}
 
       {% endif %}
-    {% endblock %}
+    </body>
+  {% endblock %}

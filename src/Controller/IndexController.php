@@ -32,7 +32,7 @@ class IndexController extends AbstractController
         if ($role=="ROLE_ADMIN"){
             return $this->render('admin_home.html.twig',["liste_demande"=>$listeDemande->findAll()]);
         }else{
-             return $this->render('user_home.html.twig');
+             return $this->render('user_home.html.twig',["user"=>$user] );
         }
     }
         }else{
@@ -110,7 +110,7 @@ class IndexController extends AbstractController
       */
       public function accepter(SemRegistreRepository $listeDemande,$id,EntityManagerInterface $entityManager){
 
-        $registre=$listeDemande->find($id)->setEtatDem("accepter");
+        $registre=$listeDemande->find($id)->setEtatDem("accepté(e)");
         $entityManager->persist($registre);
         $entityManager->flush();
 
@@ -125,7 +125,7 @@ class IndexController extends AbstractController
       */
       public function refuser(SemRegistreRepository $listeDemande,$id,EntityManagerInterface $entityManager){
 
-        $registre=$listeDemande->find($id)->setEtatDem("refuser");
+        $registre=$listeDemande->find($id)->setEtatDem("refusé(e)");
         $entityManager->persist($registre);
         $entityManager->flush();
         return $this->redirectToRoute('home');
@@ -138,16 +138,14 @@ class IndexController extends AbstractController
  */
 public function envoie_email(Request $request,UserRepository $userRep,MailerInterface $mailer){
 
-    $method=$request->getMethod();
-    $normalizer = new ObjectNormalizer();
-    $serializer = new Serializer([$normalizer]);
-        
+   
+  $method=$request->getMethod();
     if($method=="POST"){
        
-        $data = $serializer->normalize($request->request);
+        $data=$request->request->get("checked");
          if(count($data)!=0){
           foreach ($data as $x=>$value){
-$user=$userRep->find($value);
+          $user=$userRep->find($data[$x]);
            $email = (new Email())
             ->from('raniay089@gmail.com')
             ->to($user->getEmail())
@@ -189,11 +187,43 @@ else{
     return $this->redirectToRoute('home');
 
 }
+return $this->redirectToRoute('home');
 
     }
 
 }
     
+
+/**
+ * @Route("recherche_num",name="recherche_num")
+ */
+public function rechercher_num(Request $request,SemRegistreRepository $listeDemande){
+
+  $method=$request->getMethod();
+
+if($method=="POST"){
+  $num=$request->request->get("num_rech");
+  
+  return $this->render("admin_home.html.twig",["liste_demande"=>$listeDemande->findNum(["num_register"=>$num])]);
+ 
+}
+return  $this->redirectToRoute('home');;
+}
+/**
+ * @Route("recherchepays",name="recherchepays")
+ */
+public function recherchepays(Request $request,SemRegistreRepository $listeDemande){
+
+  $method=$request->getMethod();
+
+if($method=="POST"){
+  $pays=$request->request->get("pays1");
+  
+  return $this->render("admin_home.html.twig",["liste_demande"=>$listeDemande->findBy(["pays"=>$pays])]);
+ 
+}
+return  $this->redirectToRoute('home');;
+}
 
 
 }
