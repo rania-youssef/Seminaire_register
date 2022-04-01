@@ -178,6 +178,7 @@ public function envoie_email(Request $request,UserRepository $userRep,MailerInte
             </strong>
           </p>"
         );
+       dd($email);
             return $this->redirectToRoute('home');
 
 }
